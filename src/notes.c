@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   notes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:49:07 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/03 00:59:21 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:36:08 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ This is for testing and learning purposes
 /********************************process IDs***********************************/
 
 /*Every process has a process ID. 
-getpid() returns current Id and getppid() returns parent ID
+getpid() returns current ID and getppid() returns parent ID
 child process terminates before parent process.
 
 if the parent process terminates first, it is assigned a new parent ID
@@ -103,7 +103,7 @@ for instance using sleep(1) func call on child process to sleep for 1 second
 parent process terminates and child process is assigned a new ID and it is
 considered a zombie process, if you try to kill it with a sink kill command
 it will not actually free the memory
-
+ 
 In all fork functions, you need to wait for child process to finish before
 parent process, or there will be memory leaks
 */
@@ -219,7 +219,7 @@ fd[1] - write end
 
 	if (id == 0) // CHILD PROCESS
 	{
-		close(fd[0]); // because I never read inside this process for this pipe
+		close(fd[0]); // we don't read inside this process for this pipe
 		int x;
 		printf("Input a number: ");
 		scanf("%d", &x);
@@ -230,7 +230,8 @@ fd[1] - write end
 	else // PARENT PROCESS
 	{
 		close(fd[1]); // because here we do not write in this process
-		// it is common procedure to close one end in each process, whichever is not used
+		// it is common procedure to close one end in each process
+		// whichever is not used
 		int y;
 		if (read(fd[0], &y, sizeof(int)) == -1)
 			return (3);
@@ -403,7 +404,6 @@ to get a specific venv variable value*/
 }
 */
 
-
 /**********************sending an array through a pipe*************************/
 
 /*2 processes
@@ -524,3 +524,90 @@ to get a specific venv variable value*/
 
 /**********************simulating the pipe "|" operator************************/
 
+/* "|" is a pipe
+*ping -c 5 google.com | grep rtt
+ping is writing it's stdout to the pipe
+the stdin of grep is set to be on the pipe
+
+ping --stedout--> pipe --stdin--> grep		
+
+main prcoess forks another process that will execute ping
+main process forks another process that will execite grep
+So we have three processes
+the process executing grep and the process executing ping will communicate
+via a pipe, which is also created by the main process
+  _________
+ | main    |   
+ | process |_____________
+ |_________|   |         |
+      |        |         |
+ 	  |        |         |
+  ____|____    |     ____|____
+ |         |___|____|         |
+ |  grep   |________|   ping  |
+ |_________|  pipe  |_________|
+ 	        <------
+		  flow of info
+*/
+/*int	main(int argc, char **argv)
+{
+	int fd[2];
+	// fd[0] -- read end of the pipe
+	// fd[1] -- write end of the pipe
+	if (pipe(fd) == - 1)
+		return (1);
+
+	int pid1 = fork(); // creates chid process
+	if (pid1 < 0)
+		return (2);
+
+	if (pid1 == 0)	
+	{
+		// child process 1 (ping)
+		dup2(fd[1], STDOUT_FILENO); // STDOUT_FILENO = 1
+		// dup2 duplicates fd_1 into fd_2, 
+		// closing fd_2 and making it open on same file
+		// fd[1] -- write end of pipe -- is duplicated to STDOUT.
+		// now instead of ping going to STDOUT, it routes to the pipe.
+
+		close(fd[0]); // we do not read from pipe in grep process.
+		close(fd[1]); // this remains open after dup2 and is no longer needed.
+		
+		execlp("ping", "ping", "-c", "5", "google.com", NULL);
+		// execlp replaces process by ping process 
+		// so code after this line will not continue executing
+	}
+	
+	// main process
+	int pid2 = fork(); // creates a second child process
+	if (pid2 < 0)
+		return (3);
+
+	if (pid2 == 0)
+	{
+		// child process 2
+		dup2(fd[0], STDIN_FILENO); // STDIN_FILENO = 0
+		// this duplicates fd[0] into STDIN.
+		// now grep instead of taking input from STDIN,
+		// it will take it from the pipe
+		close(fd[0]);
+		close(fd[1]);
+		execlp("grep", "grep", "rtt", NULL);
+	}
+	
+	close(fd[0]);
+	close(fd[1]);
+	// all fds are inhereted into child processes
+	// we closed them in the child process
+	// but in the main process they remain open
+	// grep will not stop executing until all read fds are closed
+	// so if we do not close fd[0] grep will be in infinite loop
+	// and it is good practise to close all fds anyway so
+	// also fd[1] should be closed
+	
+	waitpid(pid1, NULL, 0); 
+	// wait for particular process, second arg is status, then options
+	waitpid(pid2, NULL, 0);
+	return(0);
+}
+*/
