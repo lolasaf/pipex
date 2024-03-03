@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:49:07 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/03 20:36:08 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:43:07 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -541,12 +541,12 @@ via a pipe, which is also created by the main process
  | process |_____________
  |_________|   |         |
       |        |         |
- 	  |        |         |
+      |        |         |
   ____|____    |     ____|____
  |         |___|____|         |
  |  grep   |________|   ping  |
  |_________|  pipe  |_________|
- 	        <------
+            <------
 		  flow of info
 */
 /*int	main(int argc, char **argv)
