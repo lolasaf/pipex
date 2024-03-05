@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 20:14:17 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/03 20:38:37 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/05 00:20:55 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ char	*ft_get_pathenv(char **envp)
 		if (!ft_strncmp(envp[i], "PATH=", 5))
 			return (envp[i]);
 	}
-	perror("PATH not found in envp");
-	exit(1);
+	perror("PATH not found in envp\n");
+	return (NULL);
 }
 
 /*Iterates over pathsplit, appends "/exec",
@@ -56,10 +56,9 @@ char	*ft_exec_path_find(char **pathsplit, char *exec)
 		tmp_path = (char *)ft_calloc(sizeof(char), tmp_path_size);
 		if (tmp_path == NULL)
 		{
-			perror("tmp_path malloc error in ft_exec_path_find");
 			free(tmp_path);
-			ft_free_pathsplit(pathsplit);
-			exit(1);
+			perror("tmp_path malloc error in ft_exec_path_find\n");
+			return (NULL);
 		}
 		ft_strlcat(tmp_path, pathsplit[i], tmp_path_size);
 		ft_strlcat(tmp_path, "/", tmp_path_size);
@@ -82,15 +81,15 @@ char	*ft_execpath(char *exec, char **envp)
 	pathenv = ft_get_pathenv(envp);
 	if (pathenv == NULL)
 	{
-		perror("pathenv is NULL in ft_execpath");
-		exit(1);
+		perror("pathenv is NULL in ft_execpath\n");
+		return (NULL);
 	}
 	pathsplit = ft_split(pathenv + 5, ':');
 	exec_path = ft_exec_path_find(pathsplit, exec);
+	ft_free_pathsplit(pathsplit);
 	if (exec_path)
 		return (exec_path);
 	free(exec_path);
-	ft_free_pathsplit(pathsplit);
-	perror("An executable path was not found");
-	exit(1);
+	perror("An executable path was not found\n");
+	return (NULL);
 }
