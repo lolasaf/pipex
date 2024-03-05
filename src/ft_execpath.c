@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 20:14:17 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/05 00:20:55 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:27:01 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ char	*ft_get_pathenv(char **envp)
 	perror("PATH not found in envp\n");
 	return (NULL);
 }
+
+
 
 /*Iterates over pathsplit, appends "/exec",
 and checks if executable path is found and is accessible and returns it
