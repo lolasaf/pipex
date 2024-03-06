@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:49:07 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/03 20:44:02 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/06 16:05:10 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ This is for testing and learning purposes
 {
 	int id = fork();
 	// from this line onwards everything is going to be executed twice
-	// child id is passed to old process
-	// child id is then set to zero
+	// child id is passed as a return to the old process
+	// child return id from fork is then set to zero (Actual ID remains)
 	//printf("Hello World! from id: %d\n", id);
 	if (id == 0)
 		printf("Hello World! from child process\n");
@@ -529,7 +529,7 @@ to get a specific venv variable value*/
 ping is writing it's stdout to the pipe
 the stdin of grep is set to be on the pipe
 
-ping --stedout--> pipe --stdin--> grep		
+ping --stdout--> pipe --stdin--> grep		
 
 main prcoess forks another process that will execute ping
 main process forks another process that will execite grep

@@ -6,23 +6,11 @@
 /*   By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 20:14:17 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/05 12:27:01 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/07 00:27:16 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-/*frees path split memory allocs*/
-void	ft_free_pathsplit(char **splits)
-{
-	size_t	i;
-
-	i = 0;
-	while (splits[i])
-		free(splits[i++]);
-	free(splits[i]);
-	free(splits);
-}
 
 /*Searches envp for string corresponding to PATH variable
 and returns it, exits if not found*/
@@ -39,8 +27,6 @@ char	*ft_get_pathenv(char **envp)
 	perror("PATH not found in envp\n");
 	return (NULL);
 }
-
-
 
 /*Iterates over pathsplit, appends "/exec",
 and checks if executable path is found and is accessible and returns it
@@ -88,7 +74,7 @@ char	*ft_execpath(char *exec, char **envp)
 	}
 	pathsplit = ft_split(pathenv + 5, ':');
 	exec_path = ft_exec_path_find(pathsplit, exec);
-	ft_free_pathsplit(pathsplit);
+	ft_free_splits(pathsplit);
 	if (exec_path)
 		return (exec_path);
 	free(exec_path);

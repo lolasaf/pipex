@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:19:13 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/05 00:44:53 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/07 00:38:02 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,20 @@
 #include <fcntl.h>
 #include "libft.h"
 
+typedef struct s_pipex
+{
+	int		infile;
+	int		outfile;
+	char	*cmd1;
+	char	*cmd2;
+	char	**cmd_av_1;
+	char	**cmd_av_2;
+	int		pipefd[2];
+	pid_t	cpid1;
+	pid_t	cpid2;
+}			t_pipex;
+
+void	ft_pipex(char **argv, char **envp, t_pipex *pipex);
 char	*ft_execpath(char *exec, char **envp);
+void	ft_free_splits(char **splits);
+void	free_close(t_pipex *pipex, int free_a, int close_f, int close_p);

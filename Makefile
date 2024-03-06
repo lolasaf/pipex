@@ -6,7 +6,7 @@
 #    By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/21 17:52:21 by wel-safa          #+#    #+#              #
-#    Updated: 2024/03/03 20:30:46 by wel-safa         ###   ########.fr        #
+#    Updated: 2024/03/07 00:35:53 by wel-safa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ LIBFTDIR := lib/libft
 #--- LIBRARIES ---
 LIBFT := $(LIBFTDIR)/libft.a
 #--- SOURCES ---
-SRCS := $(addprefix $(SRCDIR)/, main.c ft_execpath.c)
+SRCS := $(addprefix $(SRCDIR)/, main.c ft_execpath.c pipex.c free.c)
 #--- OBJECTS ---
 OBJS := $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 #--- HEADERS ---
