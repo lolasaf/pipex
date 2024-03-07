@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 20:14:17 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/07 00:27:16 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/07 10:05:35 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,9 @@ char	*ft_exec_path_find(char **pathsplit, char *exec)
 	return (NULL);
 }
 
-/*Looks for executable file "exec" and returns its path
-envp = environment variables*/
+/*Looks for executable file "exec" in envp (environment variables)
+and returns a malloced memory containing its path
+*/
 char	*ft_execpath(char *exec, char **envp)
 {
 	char	*pathenv;

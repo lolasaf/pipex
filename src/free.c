@@ -6,15 +6,15 @@
 /*   By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 00:26:07 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/07 00:27:22 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/07 10:03:05 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/*Frees cmd1 and cmd2 and commands' options  when free_a is true
-and closes infile and outfile when close_f is true
-and closes pipe when close_p is true*/
+/*if (free_a): frees cmd1 and cmd2 and their options
+if (close_f): closes infile and outfile
+if (close_p): closes pipe ends*/
 void	free_close(t_pipex *pipex, int free_a, int close_f, int close_p)
 {
 	if (free_a)
