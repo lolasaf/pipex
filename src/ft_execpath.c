@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 20:14:17 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/11 20:50:29 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/11 21:57:44 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_execpath(char *exec, char **envp)
 		return (NULL);
 	}
 	pathsplit = ft_split(pathenv + 5, ':');
-	printf("exec= %s\n", exec);
+	//printf("exec= %s\n", exec);
 	exec_path = ft_exec_path_find(pathsplit, exec);
 	ft_free_splits(pathsplit);
 	if (exec_path)

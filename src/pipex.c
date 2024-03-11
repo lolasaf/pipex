@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 23:59:57 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/11 20:56:30 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/11 22:37:53 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	ft_fork_1(t_pipex *pipex, char **envp)
 		dup2(pipex->infile, STDIN_FILENO);
 		dup2(pipex->pipefd[1], STDOUT_FILENO);
 		free_close(pipex, 0, 1, 1);
+		if (pipex->cmd1 == NULL)
+			exit(EXIT_FAILURE);
 		execve(pipex->cmd1, pipex->cmd_av_1, envp);
 		perror("execve\n");
 		free_close(pipex, 1, 0, 0);
@@ -46,8 +48,7 @@ void	ft_fork_2(t_pipex *pipex, char **envp)
 	}
 	if (pipex->cpid2 == 0)
 	{
-		if (pipex->cmd1)
-			dup2(pipex->pipefd[0], STDIN_FILENO);
+		dup2(pipex->pipefd[0], STDIN_FILENO);
 		dup2(pipex->outfile, STDOUT_FILENO);
 		free_close(pipex, 0, 1, 1);
 		execve(pipex->cmd2, pipex->cmd_av_2, envp);
@@ -102,8 +103,7 @@ void	ft_pipex(char **argv, char **envp, t_pipex *pipex)
 		free_close(pipex, 1, 1, 0);
 		exit(EXIT_FAILURE);
 	}
-	if (pipex->cmd1)
-		ft_fork_1(pipex, envp);
+	ft_fork_1(pipex, envp);
 	ft_fork_2(pipex, envp);
 	free_close(pipex, 0, 1, 1);
 	waitpid(pipex->cpid1, &pipex->status1, 0);
