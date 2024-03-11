@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:19:13 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/07 00:38:02 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/11 19:30:02 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct s_pipex
 	int		pipefd[2];
 	pid_t	cpid1;
 	pid_t	cpid2;
+	int		status1;
+	int		status2;
 }			t_pipex;
 
 void	ft_pipex(char **argv, char **envp, t_pipex *pipex);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wel-safa <wel-safa@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 23:59:57 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/07 00:54:27 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/11 20:56:30 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,37 @@ void	ft_fork_2(t_pipex *pipex, char **envp)
 	}
 	if (pipex->cpid2 == 0)
 	{
-		dup2(pipex->pipefd[0], STDIN_FILENO);
+		if (pipex->cmd1)
+			dup2(pipex->pipefd[0], STDIN_FILENO);
 		dup2(pipex->outfile, STDOUT_FILENO);
 		free_close(pipex, 0, 1, 1);
 		execve(pipex->cmd2, pipex->cmd_av_2, envp);
 		perror("execve\n");
 		free_close(pipex, 1, 0, 0);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	ft_pipex_args(char **argv, t_pipex *pipex)
+{
+	pipex->cmd_av_1 = ft_split(argv[2], ' ');
+	pipex->cmd_av_2 = ft_split(argv[3], ' ');
+	if (pipex->cmd_av_1 == NULL || pipex->cmd_av_2 == NULL)
+	{
+		perror("Split Error\n");
+		free_close(pipex, 1, 1, 0);
+		exit(EXIT_FAILURE);
+	}
+	if (pipex->cmd_av_1[0] == NULL || pipex->cmd_av_2[0] == NULL)
+	{
+		perror("Command input is not valid\n");
+		free_close(pipex, 1, 1, 0);
+		exit(EXIT_FAILURE);
+	}
+	if (!ft_strlen(pipex->cmd_av_1[0]) || !ft_strlen(pipex->cmd_av_2[0]))
+	{
+		perror("Command input is not valid\n");
+		free_close(pipex, 1, 1, 0);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -63,13 +88,11 @@ pipex_cp function is then called to execute the pipe and the processes
 */
 void	ft_pipex(char **argv, char **envp, t_pipex *pipex)
 {
-	pipex->cmd_av_1 = ft_split(argv[2], ' ');
-	pipex->cmd_av_2 = ft_split(argv[3], ' ');
+	ft_pipex_args(argv, pipex);
 	pipex->cmd1 = ft_execpath(pipex->cmd_av_1[0], envp);
 	pipex->cmd2 = ft_execpath(pipex->cmd_av_2[0], envp);
-	if (pipex->cmd1 == NULL || pipex->cmd2 == NULL)
+	if (pipex->cmd2 == NULL)
 	{
-		perror("one or two executable files were not found\n");
 		free_close(pipex, 1, 1, 0);
 		exit(EXIT_FAILURE);
 	}
@@ -79,12 +102,13 @@ void	ft_pipex(char **argv, char **envp, t_pipex *pipex)
 		free_close(pipex, 1, 1, 0);
 		exit(EXIT_FAILURE);
 	}
-	ft_fork_1(pipex, envp);
+	if (pipex->cmd1)
+		ft_fork_1(pipex, envp);
 	ft_fork_2(pipex, envp);
 	free_close(pipex, 0, 1, 1);
-	waitpid(pipex->cpid1, NULL, 0);
-	waitpid(pipex->cpid2, NULL, 0);
-	free_close(pipex, 1, 0 ,0);
+	waitpid(pipex->cpid1, &pipex->status1, 0);
+	waitpid(pipex->cpid2, &pipex->status2, 0);
+	free_close(pipex, 1, 0, 0);
 }
 
 /*
