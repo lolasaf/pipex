@@ -6,11 +6,27 @@
 /*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 23:59:57 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/14 16:38:45 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:20:55 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	ft_fork_1_1(t_pipex *pipex, char **envp)
+{
+	dup2(pipex->infile, STDIN_FILENO);
+	dup2(pipex->pipefd[1], STDOUT_FILENO);
+	free_close(pipex, 0, 1, 1);
+	if (pipex->cmd1 == NULL)
+	{
+		free_close(pipex, 1, 0, 0);
+		exit(EXIT_FAILURE);
+	}
+	execve(pipex->cmd1, pipex->cmd_av_1, envp);
+	write(2, "Error: execve\n", 15);
+	free_close(pipex, 1, 0, 0);
+	exit(EXIT_FAILURE);
+}
 
 /*Child process 1*/
 void	ft_fork_1(t_pipex *pipex, char **envp)
@@ -24,18 +40,14 @@ void	ft_fork_1(t_pipex *pipex, char **envp)
 	}
 	if (pipex->cpid1 == 0)
 	{
-		dup2(pipex->infile, STDIN_FILENO);
-		dup2(pipex->pipefd[1], STDOUT_FILENO);
-		free_close(pipex, 0, 1, 1);
-		if (pipex->cmd1 == NULL)
+		pipex->infile = open(pipex->infilestr, O_RDONLY);
+		if (pipex->infile < 0)
 		{
-			free_close(pipex, 1, 0, 0);
+			write(2, "Error: Infile not found or cannot be read\n", 43);
+			free_close(pipex, 1, 1, 1);
 			exit(EXIT_FAILURE);
 		}
-		execve(pipex->cmd1, pipex->cmd_av_1, envp);
-		write(2, "Error: execve\n", 15);
-		free_close(pipex, 1, 0, 0);
-		exit(EXIT_FAILURE);
+		ft_fork_1_1(pipex, envp);
 	}
 }
 
@@ -73,13 +85,13 @@ void	ft_pipex_args(char **argv, t_pipex *pipex)
 	}
 	if (pipex->cmd_av_1[0] == NULL || pipex->cmd_av_2[0] == NULL)
 	{
-		write(2, "Error: Command input is not valid\n", 35);
+		write(2, "Error: Command input is not valid 1\n", 37);
 		free_close(pipex, 1, 1, 0);
 		exit(EXIT_FAILURE);
 	}
 	if (!ft_strlen(pipex->cmd_av_1[0]) || !ft_strlen(pipex->cmd_av_2[0]))
 	{
-		write(2, "Error: Command input is not valid\n", 35);
+		write(2, "Error: Command input is not valid 2\n", 37);
 		free_close(pipex, 1, 1, 0);
 		exit(EXIT_FAILURE);
 	}

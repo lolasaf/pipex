@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:19:13 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/14 16:00:24 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:39:44 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 typedef struct s_pipex
 {
 	int		infile;
+	char	*infilestr;
 	int		outfile;
 	char	*cmd1;
 	char	*cmd2;

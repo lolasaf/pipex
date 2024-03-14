@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:41:17 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/14 16:42:57 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:52:49 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_pipex(t_pipex *pipex)
 	pipex->cpid1 = 0;
 	pipex->cpid2 = 0;
 	pipex->infile = 0;
+	pipex->infilestr = NULL;
 	pipex->outfile = 0;
 	pipex->pipefd[0] = 0;
 	pipex->pipefd[1] = 0;
@@ -42,12 +43,7 @@ void	start_files(int argc, char **argv, t_pipex *pipex)
 		write(2, "Outfile cannot be written to, created, or truncated\n", 53);
 		exit(EXIT_FAILURE);
 	}
-	pipex->infile = open(argv[1], O_RDONLY);
-	if (pipex->infile < 0)
-	{
-		write(2, "Error: Infile not found or cannot be read\n", 43);
-		exit(EXIT_FAILURE);
-	}
+	pipex->infilestr = ft_strdup(argv[1]);
 }
 
 int	main(int argc, char **argv, char **envp)
