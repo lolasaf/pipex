@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 16:41:17 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/11 22:20:34 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:42:57 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,20 @@ void	start_files(int argc, char **argv, t_pipex *pipex)
 {
 	if (argc != 5)
 	{
-		perror("Program arguments are not equal to 4\n");
+		write(2, "Error: Program arguments are not equal to 4\n", 45);
 		exit(EXIT_FAILURE);
 	}
 	pipex->outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipex->outfile < 0)
 	{
-		perror("Outfile cannot be written to, created, or truncated\n");
+		write(2, "Error: ", 8);
+		write(2, "Outfile cannot be written to, created, or truncated\n", 53);
 		exit(EXIT_FAILURE);
 	}
 	pipex->infile = open(argv[1], O_RDONLY);
 	if (pipex->infile < 0)
 	{
-		perror("Infile not found or cannot be read\n");
+		write(2, "Error: Infile not found or cannot be read\n", 43);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -56,9 +57,7 @@ int	main(int argc, char **argv, char **envp)
 	init_pipex(&pipex);
 	start_files(argc, argv, &pipex);
 	ft_pipex(argv, envp, &pipex);
-	if (pipex.status2 == 512)
-		return (2);
-	if (pipex.status2)
-		return (1);
-	return (pipex.status1);
+	if (WIFEXITED(pipex.status2))
+		return (WEXITSTATUS(pipex.status2));
+	return (EXIT_FAILURE);
 }

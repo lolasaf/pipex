@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 20:14:17 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/11 21:57:44 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:34:31 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	*ft_get_pathenv(char **envp)
 		if (!ft_strncmp(envp[i], "PATH=", 5))
 			return (envp[i]);
 	}
-	perror("PATH not found in envp\n");
 	return (NULL);
 }
 
@@ -45,7 +44,7 @@ char	*ft_exec_path_find(char **pathsplit, char *exec)
 		if (tmp_path == NULL)
 		{
 			free(tmp_path);
-			perror("tmp_path malloc error in ft_exec_path_find\n");
+			write(2, "Error: Malloc error in ft_exec_path_find\n", 42);
 			return (NULL);
 		}
 		ft_strlcat(tmp_path, pathsplit[i], tmp_path_size);
@@ -61,7 +60,7 @@ char	*ft_exec_path_find(char **pathsplit, char *exec)
 /*Looks for executable file "exec" in envp (environment variables)
 and returns a malloced memory containing its path
 */
-char	*ft_execpath(char *exec, char **envp)
+char	*ft_execpath(t_pipex *pipex, char *exec, char **envp)
 {
 	char	*pathenv;
 	char	**pathsplit;
@@ -70,16 +69,16 @@ char	*ft_execpath(char *exec, char **envp)
 	pathenv = ft_get_pathenv(envp);
 	if (pathenv == NULL)
 	{
-		perror("pathenv is NULL in ft_execpath\n");
+		write(2, "Error: PATH variable not found in envp\n", 40);
+		free_close(pipex, 1, 1, 0);
 		return (NULL);
 	}
 	pathsplit = ft_split(pathenv + 5, ':');
-	//printf("exec= %s\n", exec);
 	exec_path = ft_exec_path_find(pathsplit, exec);
 	ft_free_splits(pathsplit);
 	if (exec_path)
 		return (exec_path);
 	free(exec_path);
-	perror("An executable path was not found\n");
+	write(2, "Error: Command not found\n", 26);
 	return (NULL);
 }

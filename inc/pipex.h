@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:19:13 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/11 19:30:02 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:00:24 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ typedef struct s_pipex
 }			t_pipex;
 
 void	ft_pipex(char **argv, char **envp, t_pipex *pipex);
-char	*ft_execpath(char *exec, char **envp);
+char	*ft_execpath(t_pipex *pipex, char *exec, char **envp);
 void	ft_free_splits(char **splits);
 void	free_close(t_pipex *pipex, int free_a, int close_f, int close_p);
