@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 20:14:17 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/14 16:34:31 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:25:30 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,11 @@ char	*ft_execpath(t_pipex *pipex, char *exec, char **envp)
 	char	**pathsplit;
 	char	*exec_path;
 
+	if (!exec)
+	{
+		write(2, "Error: Command not found\n", 26);
+		return (NULL);
+	}
 	pathenv = ft_get_pathenv(envp);
 	if (pathenv == NULL)
 	{

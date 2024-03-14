@@ -6,7 +6,7 @@
 /*   By: wel-safa <wel-safa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 23:59:57 by wel-safa          #+#    #+#             */
-/*   Updated: 2024/03/14 18:20:55 by wel-safa         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:24:33 by wel-safa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,15 @@ void	ft_pipex_args(char **argv, t_pipex *pipex)
 		free_close(pipex, 1, 1, 0);
 		exit(EXIT_FAILURE);
 	}
-	if (pipex->cmd_av_1[0] == NULL || pipex->cmd_av_2[0] == NULL)
+	if (pipex->cmd_av_2[0] == NULL)
 	{
-		write(2, "Error: Command input is not valid 1\n", 37);
+		write(2, "Error: Command input is not valid\n", 35);
 		free_close(pipex, 1, 1, 0);
 		exit(EXIT_FAILURE);
 	}
-	if (!ft_strlen(pipex->cmd_av_1[0]) || !ft_strlen(pipex->cmd_av_2[0]))
+	if (!ft_strlen(pipex->cmd_av_2[0]))
 	{
-		write(2, "Error: Command input is not valid 2\n", 37);
+		write(2, "Error: Command input is not valid\n", 35);
 		free_close(pipex, 1, 1, 0);
 		exit(EXIT_FAILURE);
 	}
